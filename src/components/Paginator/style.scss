@@ -1,0 +1,24 @@
+.paginator{
+    width: 600px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+
+    .paginator__page{
+        width: 50px;
+        height: 50px;
+        background-color: gainsboro;
+        border-radius: 50px;
+        font-size: 1.2em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .paginator__page_active{
+        background-color:dodgerblue;
+        font-weight: bold;
+    }
+
+}
