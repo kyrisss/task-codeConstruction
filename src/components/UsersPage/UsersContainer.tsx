@@ -38,12 +38,7 @@ const UsersContainer: React.FC<PropsType> = (props) => {
                 break
             case "company":
                 if (type == "asc") {
-                    visibleUsers.sort((a, b) => {
-                        console.log(a[sortKey].name)
-                        console.log(a)
-                        return a[sortKey].name.localeCompare(b[sortKey].name)
-                        }
-                        )
+                    visibleUsers.sort((a, b) => a[sortKey].name.localeCompare(b[sortKey].name))
                 } else {
                     visibleUsers.sort((a, b) => b[sortKey].name.localeCompare(a[sortKey].name))
                 }
