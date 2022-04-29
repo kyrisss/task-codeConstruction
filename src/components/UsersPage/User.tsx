@@ -14,7 +14,7 @@ const User: React.FC<PropsType> = (props) => {
             <td>{props.username}</td>
             <td>{props.city}</td>
             <td>{props.phone}</td>
-            <td>{props.name}</td>
+            <td>{props.company}</td>
         </tr>
     )
 }
