@@ -6,12 +6,16 @@ import { getUsersTC, UserType, SET_SEARCH, SET_SORT } from './../redux/usersRedu
 //@ts-ignore
 import Users from "./Users.tsx";
 //@ts-ignore
-import SearchForm from './../SearchForm/SearchForm.tsx';
+import { SearchFormType } from "../redux/usersReducer.ts";
+//@ts-ignore
+import UsersSearchForm from "../UsersSearchForm/UsersSearchForm.tsx";
+
+
 
 
 interface PropsType {
     users: UserType[] | null
-    search: string
+    search: SearchFormType
     getUsersTC: () => void
     SET_SEARCH: () => void
 }
@@ -24,7 +28,12 @@ const UsersContainer: React.FC<PropsType> = (props) => {
     }, [])
 
     const visibleUsers = props.users?.filter(user => {
-        return user.name.toLowerCase().includes(props.search.toLowerCase())
+        return user.name.toLowerCase().includes(props.search.name.toLowerCase()) &&
+        user.username.toLowerCase().includes(props.search.username.toLowerCase()) &&
+        user.phone.toLowerCase().includes(props.search.phone.toLowerCase()) &&
+        user.address.city.toLowerCase().includes(props.search.city.toLowerCase()) &&
+        user.company.name.toLowerCase().includes(props.search.company.toLowerCase())
+
     })
 
     const sortUsers = (type: string, sortKey: string) => {
@@ -55,7 +64,7 @@ const UsersContainer: React.FC<PropsType> = (props) => {
 
     return (
         <main className="main">
-            <SearchForm search={props.search} SET_SEARCH={props.SET_SEARCH}></SearchForm>
+            <UsersSearchForm search={props.search} SET_SEARCH={props.SET_SEARCH}></UsersSearchForm>
             <Users users={visibleUsers} sortUsers={sortUsers}></Users>
         </main>
     )

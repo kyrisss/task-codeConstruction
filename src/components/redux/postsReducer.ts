@@ -1,6 +1,5 @@
 import axios from "axios"
 import { Dispatch } from "redux"
-import { setSearchACType } from "./usersReducer"
 
 export interface PostType {
     userId: number,
@@ -68,6 +67,11 @@ export const SET_POSTS = (data: PostType[]): setPostsACType => {
         type: 'SET_POSTS',
         data
     }
+}
+
+interface setSearchACType{
+    type: 'SET_SEARCH'
+    data: string
 }
 
 export const SET_SEARCH = (data: string): setSearchACType => {

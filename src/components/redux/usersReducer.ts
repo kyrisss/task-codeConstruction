@@ -32,13 +32,27 @@ export interface UserType {
 
 export interface initialStoreType {
     users: UserType[]
-    search: string
+    search: SearchFormType
     sort: string
+}
+
+export interface SearchFormType {
+    name?: string
+    username?: string
+    city?: string
+    phone?: string
+    company?: string
 }
 
 let initialStore: initialStoreType = {
     users: null,
-    search: "",
+    search: {
+        name: "",
+        username: "",
+        city: "",
+        phone: "",
+        company: ""
+    },
     sort: ""
 }
 
@@ -55,7 +69,10 @@ const statusReducer = (state: initialStoreType = initialStore, action: actionTyp
         case "SET_SEARCH":
             return {
                 ...state,
-                search: action.data
+                search: {
+                    ...state.search,
+                    ...action.data
+                }
             }
         case "SET_SORT":
             return {
@@ -82,10 +99,10 @@ export const SET_USERS = (data: UserType[]): setUsersACType => {
 
 export interface setSearchACType {
     type: 'SET_SEARCH'
-    data: string
+    data: SearchFormType
 }
 
-export const SET_SEARCH = (data: string): setSearchACType => {
+export const SET_SEARCH = (data: SearchFormType): setSearchACType => {
     return {
         type: 'SET_SEARCH',
         data

@@ -2,7 +2,7 @@ import './style.scss'
 import { connect } from "react-redux"
 import { useEffect } from "react";
 //@ts-ignore
-import SearchForm from "../SearchForm/SearchForm.tsx"
+import PostsSearchForm from "../SearchForm/PostsSearchForm.tsx"
 //@ts-ignore
 import { PostType, SET_SEARCH, SET_CURRENT_PAGE, getPostsTC } from '../redux/postsReducer.ts';
 //@ts-ignore
@@ -34,9 +34,10 @@ const PostsContainer: React.FC<PropsType> = (props) => {
 
     return (
         <main className="main">
-            <SearchForm search={props.search} SET_SEARCH={props.SET_SEARCH}></SearchForm>
+            <PostsSearchForm search={props.search} SET_SEARCH={props.SET_SEARCH}></PostsSearchForm>
             <Posts posts={filterPage}></Posts>
-            <Paginator totalCount={props.totalCount} pageSize={props.pageSize} currentPage={props.currentPage} setCurrentPage={props.SET_CURRENT_PAGE}></Paginator>
+            { filterPage.length ? <Paginator totalCount={props.totalCount} pageSize={props.pageSize} currentPage={props.currentPage} setCurrentPage={props.SET_CURRENT_PAGE}></Paginator> :
+             <div>Posts not found</div> }
         </main>
     )
 }
