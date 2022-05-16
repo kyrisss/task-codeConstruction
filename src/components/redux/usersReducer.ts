@@ -34,6 +34,7 @@ export interface initialStoreType {
     users: UserType[]
     search: SearchFormType
     sort: string
+    loading: boolean
 }
 
 export interface SearchFormType {
@@ -53,10 +54,11 @@ let initialStore: initialStoreType = {
         phone: "",
         company: ""
     },
-    sort: ""
+    sort: "",
+    loading: true
 }
 
-type actionType = setUsersACType | setSearchACType | setSortACType
+type actionType = setUsersACType | setSearchACType | setSortACType | setLoadingACType
 
 const statusReducer = (state: initialStoreType = initialStore, action: actionType): initialStoreType => {
 
@@ -78,6 +80,11 @@ const statusReducer = (state: initialStoreType = initialStore, action: actionTyp
             return {
                 ...state,
                 sort: action.data
+            }
+        case "SET_LOADING":
+            return {
+                ...state,
+                loading: action.data
             }
         default:
             return state;
@@ -121,6 +128,17 @@ export const SET_SORT = (data: string): setSortACType => {
     }
 }
 
+interface setLoadingACType {
+    type: 'SET_LOADING'
+    data: boolean
+}
+
+export const SET_LOADING = (data: boolean): setLoadingACType => {
+    return {
+        type: 'SET_LOADING',
+        data
+    }
+}
 
 
 
@@ -128,9 +146,13 @@ export const SET_SORT = (data: string): setSortACType => {
 
 export const getUsersTC = () => {
     return (dispatch: Dispatch<actionType>) => {
+        dispatch(SET_LOADING(true))
         axios.get('https://jsonplaceholder.typicode.com/users')
             .then((response) => {
                 dispatch(SET_USERS(response.data));
+                setTimeout(() => {
+                    dispatch(SET_LOADING(false))
+                }, 2000)
             })
     }
 }

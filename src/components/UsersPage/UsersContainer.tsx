@@ -9,6 +9,8 @@ import Users from "./Users.tsx";
 import { SearchFormType } from "../redux/usersReducer.ts";
 //@ts-ignore
 import UsersSearchForm from "../UsersSearchForm/UsersSearchForm.tsx";
+//@ts-ignore
+import Preloader from "../Preloader/Preloader.tsx";
 
 
 
@@ -16,6 +18,7 @@ import UsersSearchForm from "../UsersSearchForm/UsersSearchForm.tsx";
 interface PropsType {
     users: UserType[] | null
     search: SearchFormType
+    loading: boolean
     getUsersTC: () => void
     SET_SEARCH: () => void
 }
@@ -29,10 +32,10 @@ const UsersContainer: React.FC<PropsType> = (props) => {
 
     const visibleUsers = props.users?.filter(user => {
         return user.name.toLowerCase().includes(props.search.name.toLowerCase()) &&
-        user.username.toLowerCase().includes(props.search.username.toLowerCase()) &&
-        user.phone.toLowerCase().includes(props.search.phone.toLowerCase()) &&
-        user.address.city.toLowerCase().includes(props.search.city.toLowerCase()) &&
-        user.company.name.toLowerCase().includes(props.search.company.toLowerCase())
+            user.username.toLowerCase().includes(props.search.username.toLowerCase()) &&
+            user.phone.toLowerCase().includes(props.search.phone.toLowerCase()) &&
+            user.address.city.toLowerCase().includes(props.search.city.toLowerCase()) &&
+            user.company.name.toLowerCase().includes(props.search.company.toLowerCase())
 
     })
 
@@ -63,10 +66,13 @@ const UsersContainer: React.FC<PropsType> = (props) => {
     }
 
     return (
-        <main className="main">
-            <UsersSearchForm search={props.search} SET_SEARCH={props.SET_SEARCH}></UsersSearchForm>
-            <Users users={visibleUsers} sortUsers={sortUsers}></Users>
-        </main>
+        <>
+            {props.loading ? <Preloader></Preloader> : null}
+            <main className="main">
+                <UsersSearchForm search={props.search} SET_SEARCH={props.SET_SEARCH}></UsersSearchForm>
+                <Users users={visibleUsers} sortUsers={sortUsers}></Users>
+            </main>
+        </>
     )
 }
 
@@ -74,7 +80,8 @@ const mapStateToProps = (state) => {
     return {
         users: state.users.users,
         search: state.users.search,
-        sort: state.users.sort
+        sort: state.users.sort,
+        loading: state.users.loading
     }
 }
 

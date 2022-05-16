@@ -1,7 +1,8 @@
 .paginator{
     width: 600px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 10px;
     margin: 0 auto;
 
     .paginator__page{

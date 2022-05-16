@@ -13,7 +13,8 @@ export interface initialStoreType {
     search: string
     pageSize: number
     totalCount: number
-    currentPage: number
+    currentPage: number,
+    loading: boolean
 }
 
 let initialStore: initialStoreType = {
@@ -21,10 +22,11 @@ let initialStore: initialStoreType = {
     search: "",
     pageSize: 10,
     totalCount: 0,
-    currentPage: 1
+    currentPage: 1,
+    loading: false
 }
 
-type actionType = setPostsACType | setSearchACType | setTotalCountType | setCurrentPageType;
+type actionType = setPostsACType | setSearchACType | setTotalCountType | setCurrentPageType | setLoadingACType;
 
 const postsReducer = (state: initialStoreType = initialStore, action: actionType): initialStoreType => {
 
@@ -51,6 +53,11 @@ const postsReducer = (state: initialStoreType = initialStore, action: actionType
                 ...state,
                 currentPage: action.data
             }
+        case "SET_LOADING":
+            return {
+                ...state,
+                loading: action.data
+            }
         default:
             return state;
     }
@@ -69,7 +76,7 @@ export const SET_POSTS = (data: PostType[]): setPostsACType => {
     }
 }
 
-interface setSearchACType{
+interface setSearchACType {
     type: 'SET_SEARCH'
     data: string
 }
@@ -106,16 +113,32 @@ export const SET_CURRENT_PAGE = (data: number): setCurrentPageType => {
     }
 }
 
+interface setLoadingACType {
+    type: 'SET_LOADING'
+    data: boolean
+}
+
+export const SET_LOADING = (data: boolean): setLoadingACType => {
+    return {
+        type: 'SET_LOADING',
+        data
+    }
+}
+
 
 
 
 export const getPostsTC = () => {
     return (dispatch: Dispatch<actionType>) => {
+        dispatch(SET_LOADING(true))
         axios.get('https://jsonplaceholder.typicode.com/posts')
             .then((response) => {
                 console.log(response)
                 dispatch(SET_POSTS(response.data));
                 dispatch(SET_TOTAL_COUNT(response.data.length));
+                setTimeout(() => {
+                    dispatch(SET_LOADING(false))
+                }, 2000)
             })
     }
 }
